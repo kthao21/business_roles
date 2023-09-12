@@ -1,7 +1,6 @@
 const inquirer = require('inquirer');
 
-inquirer.prompt (
-    [
+inquirer.prompt ([
         {
             type: 'list',
             message: 'What would you like to do?',
@@ -11,7 +10,7 @@ inquirer.prompt (
                 'View all roles',
                 'View all employees',
                 'Add a department',
-                'Add a role'
+                'Add a role',
                 'Add an employee',
                 'Update an employee role',
                 ]
@@ -61,5 +60,4 @@ inquirer.prompt (
             message: `Which employee's role do you want to update?`,
             name: 'action',
         }
-    ]
-)
+    ]);
