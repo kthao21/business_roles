@@ -1,6 +1,13 @@
 const inquirer = require('inquirer');
 
-inquirer.prompt([
+init();
+
+function init (){
+    loadPrompts();
+}
+
+function loadPrompts (){
+    prompt([
     {
         type: 'list',
         message: 'What would you like to do?',
@@ -116,4 +123,8 @@ inquirer.prompt([
             default:
                 quit();
         }
-    })
+    })}
+
+    function viewEmployees(){
+        
+    }
