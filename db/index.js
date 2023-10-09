@@ -40,9 +40,10 @@ class DB {
     }
 
     //create role
+    //Issue here: You have an error in your SQL syntax for line 46(?)
     createRole (role) {
         return this.connection.promise().query(
-            "INSERT INTO roles (title, salary, department_id) VALUES ( ?, ?, ?)", [name, salary, department_id]);
+            "INSERT INTO role (title, salary, department_id) VALUE ?", role);
     }
 
     //remove role
@@ -60,7 +61,7 @@ class DB {
     //create department
     createDepartment (department) {
         return this.connection.promise().query(
-            "INSERT INTO department (name) VALUES (?)", department);
+            "INSERT INTO department (name) VALUES (?)", [department]);
     }
 
     //remove department

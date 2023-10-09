@@ -52,18 +52,32 @@ function viewAllRoles() {
     })
 }
 
-function addDepartment() {
+async function addDepartment() {
+    const [departments] = await db.findAllDepartments()
+    const departmentChoices = departments.map((department) => {
+        return {
+            value: department.id,
+            name: department.name
+        }
+    })
     inquirer.prompt ([{
         //name of the department
         type: "input",
         name: 'department',
         message: "What is the name of the department?",
-    }])
-    db.createDepartment().then(([data])=> {
+    }]).then ((response) => {
+        console.log(response);
+    
+        const department = {
+            name: response.department
+
+        }
+
+    db.createDepartment(department).then(([data])=> {
         console.table(data)
         init()
     })
-}
+})}
 
 function viewAllEmployees() {
     db.findAllEmployees().then(([data])=> {
@@ -72,36 +86,61 @@ function viewAllEmployees() {
     })
 }
 
-function addRole() {
+async function addRole() {
+    const [roles] = await db.findAllRoles()
+    const roleChoices = roles.map((role) => {
+        return {
+            value: role.id,
+            name: role.title
+        }
+    })
     inquirer.prompt ([{
-        //name, salary, and department for the role
+        //title(name), salary, and department for the role
         type: "input",
-        name: 'name',
-        message: "What is the name of this role?",
+        name: 'title',
+        message: "What is the title of this role?",
     }, {
         type: 'input',
-        name:'lastName',
+        name:'salary',
         message: 'What is the salary for this role?'
     }, {
-        type: 'input',
+        type: 'list',
         name:'department',
-        message: 'Which department does this role belong to?'
-    }])
-    db.createRole().then(([data])=> {
+        message: 'Which department does this role belong to?',
+        choices: roleChoices
+    }]).then ((response) => {
+        console.log(response);
+    
+        const role = {
+            title: response.title,
+            salary: response.salary,
+            department_id: response.department
+        }
+    db.createRole(role).then(([data])=> {
         console.table(data)
         init()
     })
-}
+})}
 
 async function addEmployee() {
     const [roles] = await db.findAllRoles()
     console.log(roles);
+
     const roleChoices = roles.map((role) => {
         return {
             name: role.title,
             value: role.id
         }
     })
+
+    // HELP: manager is declared but value never read
+    // const managerChoices = managers.map((manager) => {
+    //     return {
+    //         name: employee.manager_id,
+    //         value: employee.id
+    //     }
+    // })
+
     inquirer.prompt ([{
         //employee’s first name, last name, role, and manager
         type: "input",
@@ -114,12 +153,13 @@ async function addEmployee() {
     }, {
         type: 'list',
         name:'role',
-        message: '',
+        message: 'What is their role?',
         choices: roleChoices
-    }, {
-        type: 'input',
-        name:'manager',
-        message: "Who is the employee's manager?"
+    // }, {
+    //     type: 'list',
+    //     name:'manager',
+    //     message: "Who is the employee's manager?",
+    //     choices: managerChoices
     }]).then ((response) => {
         console.log(response);
     
@@ -136,17 +176,27 @@ async function addEmployee() {
     })})
 }
 
-function updateEmployee() {
+async function updateEmployee() {
+    const [employees] = await db.findAllEmployees()
+    console.log(employees);
+
+    const roleChoices = roles.map((role) => {
+        return {
+
+            value: role_id
+        }
+    })
+
     inquirer.prompt ({
         //select an employee to update and their new role
         type: "list",
         name: 'employees',
         message: "Which employee would you like to update?",
-        choices: res.map(
-            
-        )
+        choices: roleChoices
+    }).then ((response) => {
+        console.log(response);
     })
-    db.updateEmployeeRole().then(([data])=> {
+    db.updateEmployeeRole(employees).then(([data])=> {
         console.table(data)
         init()
     })
