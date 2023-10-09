@@ -11,7 +11,7 @@ class DB {
         return this.connection.promise().query(
         "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, employee.manager_id  from role left join employee on employee.role_id = role.id")
     }
-
+    
     //create employee
     createEmployee (employee) {
         return this.connection.promise().query(
@@ -42,13 +42,13 @@ class DB {
     //create role
     createRole (role) {
         return this.connection.promise().query(
-            "INSERT INTO roles (title, salary, department_id) VALUES ( ?, ?, ?)");
+            "INSERT INTO roles (title, salary, department_id) VALUES ( ?, ?, ?)", [name, salary, department_id]);
     }
 
     //remove role
     removeRole (roleId) {
         return this.connection.promise().query(
-            "DELETE FROM role WHERE id = ?", roleId);
+            "DELETE FROM role WHERE id = ?", [roleId]);
     }
 
     //view all departments
